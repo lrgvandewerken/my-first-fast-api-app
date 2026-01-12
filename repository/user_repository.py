@@ -1,6 +1,5 @@
 from sqlmodel import Session, select, Engine
-from apimodels.db_user import DBUser
-from dbmodels import User
+from dbmodels.user_model import User
 
 class UserRepository():
     def __init__(self):

@@ -1,19 +1,13 @@
 from fastapi import FastAPI
-from sqlalchemy import create_engine
 from contextlib import asynccontextmanager
-from sqlmodel import SQLModel
-from repositories.user_repository import UserRepository
+from sqlmodel import SQLModel, create_engine
+from repository.user_repository import UserRepository
 from routers.user_router import UserRouter
-
-app.include_router(user_router_instance.router, prefix ="/user", tags=["users"])
-
-app = FastAPI()
-
-user_router_instance = UserRouter()
+from dbmodels.user_model import User
 
 # Database setup
 DATABASE_URL = "sqlite:///./app.db"
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False})
 
 # Set engine voor repository (BELANGRIJK: voor lifespan)
 UserRepository.set_engine(engine)
@@ -27,4 +21,8 @@ async def lifespan(app: FastAPI):
     # Cleanup bij shutdown (optioneel)
 
 app = FastAPI(lifespan=lifespan)
+
+# Initialize router after app creation
+user_router_instance = UserRouter()
+app.include_router(user_router_instance.router, prefix="/user", tags=["users"])
 
