@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from sqlmodel import SQLModel, create_engine
-from repository.user_repository import UserRepository
+from repository.base_repository import BaseRepository
 from routers.user_router import UserRouter
 from dbmodels.user_model import User
 
@@ -9,8 +9,8 @@ from dbmodels.user_model import User
 DATABASE_URL = "sqlite:///./app.db"
 engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False})
 
-# Set engine voor repository (BELANGRIJK: voor lifespan)
-UserRepository.set_engine(engine)
+# Set engine voor alle repositories (BELANGRIJK: voor lifespan)
+BaseRepository.set_engine(engine)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
