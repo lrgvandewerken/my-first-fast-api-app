@@ -1,4 +1,5 @@
-from sqlmodel import Session, select, Engine
+from sqlmodel import Session, select
+from sqlalchemy import Engine
 from dbmodels.user_model import User
 
 class UserRepository():
