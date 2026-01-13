@@ -120,9 +120,9 @@ class User(SQLModel, table=True):
 In `models/__init__.py`:
 
 ```python
-from dbmodels.user_model import User
+from dbmodels.user_model import DbUser
 
-__all__ = ["User"]
+__all__ = ["DbUser"]
 ```
 
 ---
@@ -183,7 +183,7 @@ In `repositories/user_repository.py`:
 
 ```python
 from sqlmodel import Session, select, Engine
-from dbmodels.user_model import User
+from dbmodels.user_model import DbUser
 
 
 class UserRepository:
@@ -204,7 +204,7 @@ class UserRepository:
         return Session(cls._engine)
 
     @classmethod
-    def create(cls, user: User) -> User:
+    def create(cls, user: DbUser) -> DbUser:
         """Maak nieuwe user aan"""
         with cls._get_session() as session:
             session.add(user)
@@ -213,24 +213,24 @@ class UserRepository:
             return user
 
     @classmethod
-    def find_by_id(cls, user_id: int) -> User | None:
+    def find_by_id(cls, user_id: int) -> DbUser | None:
         """Vind user op ID"""
         with cls._get_session() as session:
-            statement = select(User).where(User.id == user_id)
+            statement = select(DbUser).where(DbUser.id == user_id)
             return session.exec(statement).first()
 
     @classmethod
-    def find_by_email(cls, email: str) -> User | None:
+    def find_by_email(cls, email: str) -> DbUser | None:
         """Vind user op email"""
         with cls._get_session() as session:
-            statement = select(User).where(User.email == email)
+            statement = select(DbUser).where(DbUser.email == email)
             return session.exec(statement).first()
 
     @classmethod
-    def find_all(cls) -> list[User]:
+    def find_all(cls) -> list[DbUser]:
         """Vind alle users"""
         with cls._get_session() as session:
-            statement = select(User)
+            statement = select(DbUser)
             return list(session.exec(statement).all())
 ```
 
@@ -263,7 +263,7 @@ mappers/
 In `mappers/user_mapper.py`:
 
 ```python
-from dbmodels.user_model import User
+from dbmodels.user_model import DbUser
 from dtos.user_dto import ApiUserCreate, ApiUser
 
 
@@ -271,15 +271,15 @@ class UserMapper:
     """Mapper voor DTO <-> Entity conversie"""
 
     @staticmethod
-    def to_entity(dto: ApiUserCreate) -> User:
+    def to_entity(dto: ApiUserCreate) -> DbUser:
         """Converteer DTO naar Entity"""
-        return User(
+        return DbUser(
             name=dto.name,
             email=dto.email
         )
 
     @staticmethod
-    def to_dto(entity: User) -> ApiUser:
+    def to_dto(entity: DbUser) -> ApiUser:
         """Converteer Entity naar DTO"""
         return ApiUser(
             id=entity.id,
@@ -419,10 +419,10 @@ Je kunt de repository ook direct gebruiken zonder via de service/router:
 
 ```python
 from repositories.user_repository import UserRepository
-from dbmodels.user_model import User
+from dbmodels.user_model import DbUser
 
 # Direct gebruiken - geen sessie nodig!
-user = User(name="John Doe", email="john@example.com")
+user = DbUser(name="John Doe", email="john@example.com")
 saved_user = UserRepository.create(user)
 
 # Of andere methoden:

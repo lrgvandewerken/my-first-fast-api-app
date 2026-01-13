@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from sqlmodel import SQLModel, create_engine
 from repository.base_repository import BaseRepository
 from routers.user_router import UserRouter
-from dbmodels.user_model import User
+from dbmodels.user_model import DbUser
 
 # Database setup
 DATABASE_URL = "sqlite:///./app.db"

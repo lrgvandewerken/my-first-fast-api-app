@@ -1,7 +1,5 @@
 from fastapi import APIRouter
-
 from apimodels.api_user import APIUser
-from mapper.user_mapper import UserMapper
 from service.user_service import UserService
 
 
@@ -16,4 +14,7 @@ class UserRouter:
     def create_user(api_user: APIUser):
         UserService.create_user(api_user)
 
+    @router.get("/users")
+    def get_users():
+        return UserService.get_all_users()
 

@@ -1,7 +1,8 @@
 from sqlmodel import SQLModel, Field
 
-class User(SQLModel, table=True):
+
+class DbUser(SQLModel, table=True):
     """User entity voor database"""
     id: int | None = Field(default=None, primary_key=True)
     name: str
-    email: str
+    password: str

@@ -1,3 +1,3 @@
-from dbmodels.user_model import User
+from dbmodels.user_model import DbUser
 
-__all__ = ["User"]
+__all__ = ["DbUser"]
