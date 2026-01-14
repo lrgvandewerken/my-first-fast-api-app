@@ -11,7 +11,8 @@ class UserService():
     def __init__(self):
         pass
 
-    def create_user(api_user: APIUser) -> APIUserResponse:
+    @classmethod
+    def create_user(cls, api_user: APIUser) -> APIUserResponse:
         db_user: DbUser = UserMapper.api_user_to_user(api_user)
         saved_user = UserRepository.create(db_user)
         return UserMapper.user_to_api_user_response(saved_user)

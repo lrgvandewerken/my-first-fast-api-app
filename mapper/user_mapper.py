@@ -7,6 +7,7 @@ class UserMapper():
     def __init__(self):
         pass
 
+    @staticmethod
     def api_user_to_user(api_user: APIUser):
         return DbUser(name=api_user.name, email=api_user.email )
 
